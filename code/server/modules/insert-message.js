@@ -47,18 +47,106 @@ let _assignOwnerAndTimestamp = ( message ) => {
   message.timestamp = new Date();
 };
 
-let _botResponse = (message) => {
-  // console.log(Meteor.userId())
-  console.log(message.message);
-  message.owner = "GameBot";
-  //message.message = "Shut up, human";
+let _startBlock = (message) => {
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        currentBlock: 1
+      }
+    });
+    let firstBlock = Blocks.find({blockNum: 1}).fetch()[0];
+    _insertMessage(_botMessageBuilder(firstBlock, message));
+}
 
-  if (Meteor.findOne({_id: Meteor.userId()}).lives === 0){
-    message.message = "You've run out of lives! Restart the game";
+let _botMessageBuilder = (block, message) => {
+    message.owner = "GameBots"
+    message.message = "![](http://placehold.it/300x100)" + "\n\n"
+    message.message = message.message + block.description;
+    return message;
+}
+
+let _botResponse = (message) => {
+
+  message.owner = "GameBots";
+
+  // if (Meteor.users.findOne(Meteor.userId()).lives === 0){
+  //   message.message = "You've run out of lives! Restart the game";
+  //   _insertMessage(message);
+  // }
+
+  if (message.message === "begin"){
+    _startBlock(message);
   }
 
   console.log(message);
-  // console.log(this.userId);
+
+  // console.log(Users.find({}).fetch());
+
+  //debug mode, skipping to a block. Ignored if the user doesn't use 'goto'
+  var checkGoTo = message.message.split(" ");
+  console.log('checkGoTo', checkGoTo);
+  if (checkGoTo[0] === "goto"){
+    var currentBlock = Number(checkGoTo[1]);
+    var toLoad = Blocks.find({blockNum: currentBlock}).fetch();
+    // Meteor.user
+    console.log('toLoad', toLoad)
+    console.log('ding', toLoad);
+
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        currentBlock: 1
+      }
+    });
+
+    message.message = "![](http://placehold.it/300x100)" + "\n\n"
+    message.message = message.message + toLoad[0].description;
+
+    // // message.message = "Crap!"
+    console.log(message);
+    _insertMessage(message);
+  }
+
+  //grading the answer to a question/block
+  if (message.message.toLowerCase() === 'yes' || message.message.toLowerCase() === 'no'){
+    var whereToNext;
+
+
+    console.log(Meteor.users.find({_id: Meteor.userId()}).fetch());
+    var currentBlockNum = Number(Meteor.users.find({_id: Meteor.userId()}).fetch()[0].currentBlock)
+
+    console.log(currentBlockNum);
+    var currentBlock = Blocks.find({blockNum: currentBlockNum}).fetch()[0];
+    // var 
+    // var currentQ = Blocks.find({blockNum: }).fetch()[0];
+
+    console.log('curBlock', currentBlock);
+
+    //set this property on the user object
+    if (message.message.toLowerCase() === 'yes') whereToNext = currentBlock.button1Next;
+    if (message.message.toLowerCase() === 'no') whereToNext = currentBlock.button2Next;
+    
+    console.log('next', whereToNext);
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        currentBlock: whereToNext
+      }
+    });
+
+    var newRender = Blocks.find({"blockNum": whereToNext}).fetch()[0];
+    message.message = "![](" + newRender.image+ ")" + "\n\n" + newRender.description;
+    // message.message = message.message + newRender.description;
+    message.owner = "GameBot"
+    _insertMessage(message);
+  }
+
+  //add a 'continue' command to advance from intermediate to next
+
+  // if () {
+  //   //data lookup
+  //   //construct message.message response
+
+  //   _insertMessage(message);
+  // }
+
 
   if (message.message === 'reset') {
     //cause reset operation
@@ -67,9 +155,11 @@ let _botResponse = (message) => {
 
     Meteor.users.update(Meteor.userId(), {
       $set: {
-        level: 0,
-        xp: 0,
-        bits: 0
+        profile: {
+          level: 0,
+          xp: 0,
+          bits: 0
+        }
       }
     });
 
@@ -89,18 +179,23 @@ let _botResponse = (message) => {
     _insertMessage(message);
   }
 
-  //_insertMessage(message);
+  //catchall response for un-parse-able input.
 
 }
 
 export default function( message ) {
   _assignOwnerAndTimestamp( message );
 
+
+
   if ( !_checkIfSelf( message ) ) {
     _assignDestination( message );
     _cleanUpMessageBeforeInsert( message );
     _insertMessage( message );
-    _botResponse(message);
+    if (Channels.find({_id: message.channel}).fetch()[0].name === "gamebots"){
+      _botResponse(message);
+    }
+
   } else {
     throw new Meteor.Error( '500', 'Can\'t send messages to yourself.' );
   }
