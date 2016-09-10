@@ -28,7 +28,7 @@ Template.default.helpers({
       'signup',
       'recover-password',
       'reset-password'
-    ], '/messages/general' );
+    ], '/messages/gamebots' );
   },
   redirectPublic() {
     return handleRedirect( [ 'channel' ], '/login' );

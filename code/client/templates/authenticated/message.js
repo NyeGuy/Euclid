@@ -1,6 +1,9 @@
+import handleMessageInsert from '../../modules/handle-message-insert';
+
+
 Template.message.helpers({
   name( userId ) {
-    if ( userId && userId != "Doofus") {
+    if ( userId && userId != "GameBots") {
       let user = Meteor.users.findOne( userId, { fields: { 'profile.name': 1 } } );
       return user ? `${ user.profile.name.first } ${ user.profile.name.last }` : '';
     }
@@ -11,6 +14,11 @@ Template.message.helpers({
   //   return 
   // }
   
+  getBlock() {
+    // console.log(Blocks.find({}, { sort: { createdAt: -1 }} ));
+    // return Blocks.find({}, { sort: { createdAt: -1 } });
+  },
+
   messageFromGameBot(message){
     if (message.owner === "GameBot"){
       return true;
@@ -28,8 +36,8 @@ Template.message.events({
   },
 
   //convert this to select the next appropriate block in conversation.
-  'click button' () {
-    alert("test");
+  'click button' (event, template) {
+    handleMessageInsert( event, template );
   }
 
 });

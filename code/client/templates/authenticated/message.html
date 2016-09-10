@@ -2,26 +2,38 @@
   <div class="message">
     {{#if showHeader}}
       <div class="whois">
-        <img class="avatar" src="http://placehold.it/100x100">
+        <!-- <img class="avatar" src="http://placehold.it/100x100"> -->
         <header>
           <h4>{{name owner}} <span>{{messageTimestamp timestamp}}</span></h4>
         </header>
       </div>
     {{/if}}
 
-    <!-- {{#if messageFromGameBot}} -->
+
+    {{#if messageFromGameBot message}}
+      {{> gamebotBlock }}
+    {{ else }}
+      <div class="body">
+        {{{parseMarkdown message}}}
+      </div>
+    {{/if}}
+
+  </div>
+</template>
+
+<template name="gamebotBlock">
+
     <img src="http://placehold.it/300x200">
-    <!-- {{/if}} -->
 
     <div class="body">
       {{{parseMarkdown message}}}
     </div>
-  
-    <!-- {{#if messageFromGameBot(message) }} -->
+
     <button class="">Choice 1</button>
     <button class="">Choice 2</button>
     <button class="">Choice 3</button>
-    <!-- {{/if}} -->
 
-  </div>
 </template>
+
+
+

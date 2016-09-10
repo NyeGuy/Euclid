@@ -1,4 +1,3 @@
-//present error message if there's no 
 
 Template.shop.helpers = {
 
