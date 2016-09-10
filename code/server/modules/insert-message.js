@@ -47,6 +47,52 @@ let _assignOwnerAndTimestamp = ( message ) => {
   message.timestamp = new Date();
 };
 
+let _botResponse = (message) => {
+  // console.log(Meteor.userId())
+  console.log(message.message);
+  message.owner = "GameBot";
+  //message.message = "Shut up, human";
+
+  if (Meteor.findOne({_id: Meteor.userId()}).lives === 0){
+    message.message = "You've run out of lives! Restart the game";
+  }
+
+  console.log(message);
+  // console.log(this.userId);
+
+  if (message.message === 'reset') {
+    //cause reset operation
+    message.message = "All your values have been reset.";
+    // console.log(Meteor.users.find(Meteor.userId()));
+
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        level: 0,
+        xp: 0,
+        bits: 0
+      }
+    });
+
+    _insertMessage(message);
+  }
+
+  if (message.message === 'levelup') {
+    // message = levelUpHandler()
+    message.message = "Congratulations! You've leveled up!";
+
+    // Meteor.users.update(Meteor.userId(), {
+    //   // // $set: {
+    //   //   {$inc: {level: 1}}
+    //   // // }
+    // });
+
+    _insertMessage(message);
+  }
+
+  //_insertMessage(message);
+
+}
+
 export default function( message ) {
   _assignOwnerAndTimestamp( message );
 
@@ -54,6 +100,7 @@ export default function( message ) {
     _assignDestination( message );
     _cleanUpMessageBeforeInsert( message );
     _insertMessage( message );
+    _botResponse(message);
   } else {
     throw new Meteor.Error( '500', 'Can\'t send messages to yourself.' );
   }
