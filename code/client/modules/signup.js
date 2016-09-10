@@ -10,12 +10,7 @@ let _handleSignup = () => {
         first: template.find( '[name="firstName"]' ).value,
         last: template.find( '[name="lastName"]' ).value
       }
-    },
-    lives: 9,
-    level: 1,
-    xp: 0,
-    bits: 0,
-    dda: 1
+    }
   };
 
   Accounts.createUser( user, ( error ) => {
