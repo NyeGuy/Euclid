@@ -9,7 +9,12 @@ let _handleSignup = () => {
       name: {
         first: template.find( '[name="firstName"]' ).value,
         last: template.find( '[name="lastName"]' ).value
-      }
+      },
+      level: 1,
+      lives: 9,
+      bits: 100,
+      xp: 0,
+      dda: 1
     }
   };
 
