@@ -32,17 +32,14 @@ let _seedUsers = () => {
       email: 'euclid@gamebot2.com',
       password: 'secretkey2',
       profile: {
-        name: { first: 'Doug', last: 'Funnie' }
+        name: { first: 'Doug', last: 'Funnie' },
+        level: 1,
+        lives: 5,
+        xp: 1000,
+        bits: 2000
       },
-      roles: [ 'bot' ],
-      lives: 5,
-      xp: 1000,
-      bits: 2000
+      roles: [ 'admin' ]
     }
-
-
-
-
     ]
   });
 };
@@ -50,8 +47,11 @@ let _seedUsers = () => {
 let _seedChannels = () => {
   Seed( 'channels', {
     environments: [ 'development', 'staging', 'production' ],
-    data: [ { name: 'general' } ]
-  });
+    data: [
+      // { name: 'general' },
+      { name: 'gamebots'}
+    ]
+  })
 };
 
 let _seedBlocks = () => {
@@ -60,47 +60,88 @@ let _seedBlocks = () => {
     data: [ 
       { 
         blockNum: 1,
-        image:"",
-        description: 'Welcome to GameBots',
-        button1: "True",
+        image:"http://placehold.it/300x100",
+        description: "Welcome to GameBots. Are you ready to start. Type 'yes'.",
+        button1: "Yes",
         button1Next: 2,
-        button2: "False",
-        button1Next: 3,
-        button3: "Skip",
-        button1Next: 4
+        // button2: "No",
+        // button2Next:
       },
       { 
         blockNum: 2,
-        image:"",
-        description: 'Question 1',
+        image:"http://placehold.it/300x100",
+        description: 'Awesome. First question: yes or no. Blah blah',
         button1: "True",
-        button1Next: 2,
-        button2: "False",
         button1Next: 3,
-        button3: "Skip",
-        button1Next: 4
+        button2: "False",
+        button2Next: 4,
       },
       { 
         blockNum: 3,
-        image:"",
-        description: 'Question 2',
+        image:"http://placehold.it/300x100",
+        description: 'Correct answer! Onto the next question',
         button1: "True",
-        button1Next: 2,
+        button1Next: 5,
         button2: "False",
-        button1Next: 3,
-        button3: "Skip",
-        button1Next: 4
+        button2Next: 5,
       },
       { 
         blockNum: 4,
-        image:"",
-        description: 'Question 3',
+        image:"http://placehold.it/300x100",
+        description: 'Wrong answer. You lost a life.',
         button1: "True",
-        button1Next: 2,
+        button1Next: 5,
         button2: "False",
-        button1Next: 3,
-        button3: "Skip",
-        button1Next: 4
+        button2Next: 5,
+      },{ 
+        blockNum: 5,
+        image:"http://placehold.it/300x100",
+        description: 'Question 2. The right answer is No.',
+        button1: "True",
+        button1Next: 6,
+        button2: "False",
+        button2Next: 7,
+      },{ 
+        blockNum: 6,
+        image:"",
+        description: 'Wrong answer. You lost a life.',
+        button1: "True",
+        button1Next: 8,
+        button2: "False",
+        button2Next: 8,
+
+      }, { 
+        blockNum: 7,
+        image:"",
+        description: 'Right answer! You gained 100 bits.',
+        button1: "True",
+        button1Next: 8,
+        button2: "False",
+        button1Next: 8,
+      }, { 
+        blockNum: 8,
+        image:"",
+        description: 'Question 3. The right answer is Yes',
+        button1: "True",
+        button1Next: 9,
+        button2: "False",
+        button2Next: 10,
+      }, { 
+        blockNum: 9,
+        image:"",
+        description: 'Correct! You gained 100 bits.',
+        button1: "True",
+        button1Next: 11,
+        button2: "False",
+        button2Next: 11,
+      },{ 
+        blockNum: 10,
+        image:"",
+        description: 'You lost a life.',
+        button1: "True",
+        button1Next: 11,
+        button2: "False",
+        button2Next: 11,
       }
     ]
   });
