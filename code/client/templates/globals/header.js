@@ -11,7 +11,7 @@ Template.header.helpers({
           6: 'Saturday'
         };
 
-    return `It's ${ days[ now.getDay() ] }, we still own you!`;
+    return `It's ${ days[ now.getDay() ] }, let's game it up!`;
   }
 });
 

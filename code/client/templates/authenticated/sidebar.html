@@ -1,9 +1,10 @@
 <template name="sidebar">
   <aside class="sidebar">
-
+ 
   {{> profilecard}}
 
-    <h5>Channels</h5>
+ 
+    <h5>Sessions</h5>
     <ul>
       {{#each channel in channels}}
         <li class="{{currentChannel channel.name}}">
@@ -13,16 +14,17 @@
         </li>
       {{/each}}
     </ul>
+           <br><br>
 
-    <h5>Direct Messages</h5>
-    <ul>
-      {{#each user in users}}
-        <li class="{{currentChannel user.username}}">
-          <a href="/messages/@{{user.username}}">
-            {{fullName user.profile.name}}
-          </a>
-        </li>
-      {{/each}}
-    </ul>
+    <section>   
+    <h5>Menu</h5>
+        
+        <li><p>Data</p></li>
+        <li><p>Store</p></li>
+        <li><p>Settings</p></li>
+       
+      <br><br>
+        <p>Note: This is only a Demo<br>** Work in Progress **</p>
+    </section>
   </aside>
 </template>

@@ -1,16 +1,16 @@
 <template name='profilecard'>
 
-	<img id="user-avatar" src="">
+	<center>
+        <img id="user-avatar" src="http://nyewarburton.com/site/wp-content/uploads/botavatar_01.png">
 
 	<div id="user-stats">
-		<p>{{ user.username }}</p>
-		<p>Level: {{ user.level }} </p>
+		<h3>{{ user.username }}</h3>
+        
 		<p>Lives: {{ user.lives }} </p>
 		<p>XP: {{ user.xp }} </p>
 		<p>Bits: {{ user.bits }} </p>
-		<p>Dynamic Difficulty Adjust: {{ user.dda }}</p>
 	</div>
+    </center>
 
 </template>
-
 
