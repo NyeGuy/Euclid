@@ -13,9 +13,8 @@ let _handleSignup = () => {
       level: 1,
       lives: 9,
       bits: 100,
-      xp: 0,
-      dda: 1
-    }
+      xp: 0
+    }  
   };
 
   Accounts.createUser( user, ( error ) => {
