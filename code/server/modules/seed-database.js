@@ -84,15 +84,23 @@ let _seedBlocks = () => {
         button1Next: 5,
         button2: "False",
         button2Next: 5,
+        modifier: {
+          type: "bits",
+          value: 25
+        }
       },
       { 
         blockNum: 4,
         image:"http://placehold.it/300x100",
-        description: 'Wrong answer. You lost a life.',
+        description: 'Wrong answer.',
         button1: "True",
         button1Next: 5,
         button2: "False",
         button2Next: 5,
+        modifier: {
+          type: "lives",
+          value: -1
+        }
       },{ 
         blockNum: 5,
         image:"http://placehold.it/300x100",
@@ -109,7 +117,10 @@ let _seedBlocks = () => {
         button1Next: 8,
         button2: "False",
         button2Next: 8,
-
+        modifier: {
+          type: "lives",
+          value: -1
+        }
       }, { 
         blockNum: 7,
         image:"",
@@ -118,6 +129,10 @@ let _seedBlocks = () => {
         button1Next: 8,
         button2: "False",
         button1Next: 8,
+        modifier: {
+          type: "bits",
+          value: 100
+        }        
       }, { 
         blockNum: 8,
         image:"",
@@ -134,14 +149,80 @@ let _seedBlocks = () => {
         button1Next: 11,
         button2: "False",
         button2Next: 11,
+        modifier: {
+          type: "bits",
+          value: 100
+        }               
       },{ 
         blockNum: 10,
         image:"",
-        description: 'You lost a life.',
+        description: 'Incorrect.',
         button1: "True",
         button1Next: 11,
         button2: "False",
         button2Next: 11,
+        modifier: {
+          type: "lives",
+          value: -1
+        }               
+      },
+      {
+        blockNum: 11,
+        image:"",
+        description: 'Question 4.',
+        button1: "True",
+        button1Next: 12,
+        button2: "False",
+        button2Next: 13,
+      },{
+        blockNum: 12,
+        image:"",
+        description: 'You got it right! Points added.',
+        button1: "True",
+        button1Next: 14,
+        button2: "False",
+        button2Next: 14,
+      },{
+        blockNum: 13,
+        image:"",
+        description: 'Wrong answer.',
+        button1: "True",
+        button1Next: 14,
+        button2: "False",
+        button2Next: 14,
+      },{
+        blockNum: 14,
+        image:"",
+        description: "Question 5.",
+        button1: "True",
+        button1Next: 15,
+        button2: "False",
+        button2Next: 16,
+      },{
+        blockNum: 15,
+        image:"",
+        description: "Correct!.",
+        button1: "True",
+        button1Next: 17,
+        button2: "False",
+        button2Next: 17,
+      },{
+        blockNum: 16,
+        image:"",
+        description: "Incorrect. ",
+        button1: "True",
+        button1Next: 17,
+        button2: "False",
+        button2Next: 17,
+      },
+      {
+        blockNum: 17,
+        image:"",
+        description: "And that's the end of the trial run. Feel free to reset to block 1 with the 'begin' text command.",
+        button1: "True",
+        button1Next: 1,
+        button2: "False",
+        button2Next: 1,
       }
     ]
   });
