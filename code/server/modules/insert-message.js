@@ -57,8 +57,15 @@ let _startBlock = (message) => {
     _insertMessage(_botMessageBuilder(firstBlock, message));
 }
 
+let _botCatchAllResponse = (message) => {
+  message.owner = "GameBots"
+  message.message = "I'm sorry. That wasn't a valid command.";
+  _insertMessage(message);
+}
+
 let _botMessageBuilder = (block, message) => {
     message.owner = "GameBots"
+    // message.message = "![](" + block.image + ")" + "\n\n"
     message.message = "![](http://placehold.it/300x100)" + "\n\n"
     message.message = message.message + block.description;
     return message;
@@ -73,18 +80,17 @@ let _botResponse = (message) => {
   //   _insertMessage(message);
   // }
 
-  if (message.message === "begin"){
-    _startBlock(message);
-  }
-
   console.log(message);
-
-  // console.log(Users.find({}).fetch());
 
   //debug mode, skipping to a block. Ignored if the user doesn't use 'goto'
   var checkGoTo = message.message.split(" ");
   console.log('checkGoTo', checkGoTo);
-  if (checkGoTo[0] === "goto"){
+
+  if (message.message === "begin"){
+    _startBlock(message);
+  }
+
+  else if (checkGoTo[0] === "goto"){
     var currentBlock = Number(checkGoTo[1]);
     var toLoad = Blocks.find({blockNum: currentBlock}).fetch();
     // Meteor.user
@@ -106,9 +112,8 @@ let _botResponse = (message) => {
   }
 
   //grading the answer to a question/block
-  if (message.message.toLowerCase() === 'yes' || message.message.toLowerCase() === 'no'){
+  else if (message.message.toLowerCase() === 'yes' || message.message.toLowerCase() === 'no'){
     var whereToNext;
-
 
     console.log(Meteor.users.find({_id: Meteor.userId()}).fetch());
     var currentBlockNum = Number(Meteor.users.find({_id: Meteor.userId()}).fetch()[0].currentBlock)
@@ -119,6 +124,16 @@ let _botResponse = (message) => {
     // var currentQ = Blocks.find({blockNum: }).fetch()[0];
 
     console.log('curBlock', currentBlock);
+
+    if (currentBlock.modifier){
+        console.log("change score");
+        if (currentBlock.modifier.type === 'lives'){
+            var statToUpdate = currentBlock.modifier.type;
+            Meteor.users.update(Meteor.userId(), { $inc: { "profile.lives": currentBlock.modifier.value }});      
+        } else {
+            Meteor.users.update(Meteor.userId(), { $inc: { "profile.bits": currentBlock.modifier.value }});
+        }
+    }
 
     //set this property on the user object
     if (message.message.toLowerCase() === 'yes') whereToNext = currentBlock.button1Next;
@@ -136,51 +151,31 @@ let _botResponse = (message) => {
     // message.message = message.message + newRender.description;
     message.owner = "GameBot"
     _insertMessage(message);
+  } else {
+    _botCatchAllResponse(message);      
+
   }
 
   //add a 'continue' command to advance from intermediate to next
 
-  // if () {
-  //   //data lookup
-  //   //construct message.message response
-
-  //   _insertMessage(message);
+  // switch (message.message) {
+  //   case "reset":
+  //     message.message = "All your values have been reset.";
+  //     Meteor.users.update(Meteor.userId(), {
+  //         $set: {
+  //           profile: {
+  //             level: 0,
+  //             xp: 0,
+  //             bits: 0
+  //           }
+  //         }
+  //       });
+  //     _insertMessage(message);
+  //   default:
+  //     //catchall response for un-parse-able input.
+  //     _botCatchAllResponse(message);      
+  //     break;
   // }
-
-
-  if (message.message === 'reset') {
-    //cause reset operation
-    message.message = "All your values have been reset.";
-    // console.log(Meteor.users.find(Meteor.userId()));
-
-    Meteor.users.update(Meteor.userId(), {
-      $set: {
-        profile: {
-          level: 0,
-          xp: 0,
-          bits: 0
-        }
-      }
-    });
-
-    _insertMessage(message);
-  }
-
-  if (message.message === 'levelup') {
-    // message = levelUpHandler()
-    message.message = "Congratulations! You've leveled up!";
-
-    // Meteor.users.update(Meteor.userId(), {
-    //   // // $set: {
-    //   //   {$inc: {level: 1}}
-    //   // // }
-    // });
-
-    _insertMessage(message);
-  }
-
-  //catchall response for un-parse-able input.
-
 }
 
 export default function( message ) {
