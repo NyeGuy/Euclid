@@ -65,8 +65,7 @@ let _botCatchAllResponse = (message) => {
 
 let _botMessageBuilder = (block, message) => {
     message.owner = "GameBots"
-    // message.message = "![](" + block.image + ")" + "\n\n"
-    message.message = "![](http://placehold.it/300x100)" + "\n\n"
+    message.message = block.image ? ("![](" + block.image + ")" + "\n\n") : "";
     message.message = message.message + block.description;
     return message;
 }
